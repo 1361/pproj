@@ -27,6 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+STRIPE_SECRET_KEY = os.environ.get(
+    "STRIPE_SECRET_KEY",
+    "sk_test_wDLDyofvO4HaufPVzroEI5p8"
+
+)
+STRIPE_PUBLIC_KEY = os.environ.get(
+    "STRIPE_SECRET_KEY",
+    "pk_test_zgA675mwTdEfIKiI5kUMzIil"
+)
+
 
 # Application definition
 
@@ -38,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls',
+    'payments',
 )
 
 MIDDLEWARE_CLASSES = (

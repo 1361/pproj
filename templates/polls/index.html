@@ -27,11 +27,15 @@
 {% endif %}
 
 
-<form action="add/" method="post">
-<form action="add/"  question_txt %}" method="post">
+
+<form action="add/"  method="post">
 {% csrf_token %}
-    <label for="type">Add Another </label>
+    <label for="type">Add Another Question </label>
     <input id="question_txt" type="text" name="question_txt">
+     <label for="type">Choice 1 </label>
+    <input id="ch1" type="text" name="ch1">
+    <label for="type">Choice 2 </label>
+    <input id="ch2" type="text" name="ch2">
     <input type="submit" value="Submit">
 </form>
 
