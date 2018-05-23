@@ -2,9 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.utils import timezone
+from django.contrib.auth.decorators import permission_required
 
 
 from .models import Question, Choice
+
 
 # Create your views here.
 
@@ -16,13 +19,16 @@ class IndexView(generic.ListView):
         """Return the last five published questions."""
         return Question.objects.order_by('-pub_date')[:5]
 
+
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
 
+
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
 
 def vote(request, question_id):
     p = get_object_or_404(Question, pk=question_id)
@@ -41,3 +47,11 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+
+
+@permission_required('polls.add_question')
+def question(request):
+    question_txt = request.POST.get('question_txt')
+    new_question = Question(question_text=question_txt, pub_date=timezone.now())
+    new_question.save()
+    return HttpResponseRedirect('/polls/')
