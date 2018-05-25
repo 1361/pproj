@@ -55,26 +55,35 @@
 
 </body>
 </html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Results</title>
+    <title>Signup</title>
 </head>
 <body>
-<h1>{{ listing.listing_name }}</h1>
 
-<ul>
-{% for product in listing.products_set.all %}
-    <li>{{ product.type }} -- {{ product.amount_available }} vote{{ product.amount_available|pluralize }}</li>
-{% endfor %}
-</ul>
-
-<a href="{% url 'polls:detail' listing.id %}">Vote again?</a>
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+  </form>
+{% endblock %}
 </body>
 </html>
 
 <footer class="container-fluid text-center">
   <p>Footer Text</p>
 </footer>
-

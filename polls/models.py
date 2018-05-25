@@ -21,7 +21,19 @@ class Choice(models.Model):
         return self.choice_text
 
 
-class Car(models.Model):
-    name = models.CharField(max_length=234)
-    year = models.CharField(max_length=4)
-    charge_id = models.CharField(max_length=234)
+class Listing(models.Model):
+    listing_name = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+    def __str__(self):
+        return self.listing_name
+
+
+class Products(models.Model):
+    listing = models.ForeignKey(Listing)
+    type = models.CharField(max_length=200)
+    amount_available = models.IntegerField(default=0)
+    list_price = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return self.type

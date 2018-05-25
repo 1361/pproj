@@ -1,14 +1,18 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.forms import UserCreationForm
+from polls.forms import ProducerProfileForm, ConsumerProfileForm
+from django.contrib.auth import login, authenticate
 from mysite import settings
+from django.contrib.auth.models import Group
 import stripe
+from decimal import Decimal
 
-from .models import Question, Choice, Car
+from .models import Question, Choice, Listing
 
 stripe.api_key = "sk_test_wDLDyofvO4HaufPVzroEI5p8"
 
@@ -25,20 +29,67 @@ class IndexView(generic.ListView):
         return Question.objects.order_by('-pub_date')[:5]
 
 
+class ListView(generic.ListView):
+    template_name = 'polls/list-products.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Listing.objects.order_by('-pub_date')[:5]
+
+
+class ViewProductsView(generic.ListView):
+    model = Listing
+    template_name = 'polls/view-products.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Listing.objects.order_by('-pub_date')[:5]
+
+
 class DetailView(generic.DetailView):
-    model = Question
+    model = Listing
     template_name = 'polls/detail.html'
 
 
 class ResultsView(generic.DetailView):
-    model = Question
+    model = Listing
     template_name = 'polls/results.html'
 
 
-class SignUp(generic.CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/signup.html'
+def producer_signup(request):
+    if request.method == 'POST':
+        form = ProducerProfileForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            group = Group.objects.get(name='Beef Producers')
+            group.user_set.add(user)
+            login(request, user)
+            return redirect('polls:index')
+    else:
+        form = ProducerProfileForm()
+    return render(request, 'registration/producer-signup.html', {'form': form})
+
+
+def consumer_signup(request):
+    if request.method == 'POST':
+        form = ConsumerProfileForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            group = Group.objects.get(name='Consumers')
+            group.user_set.add(user)
+            login(request, user)
+            return redirect('polls:index')
+    else:
+        form = ConsumerProfileForm()
+    return render(request, 'registration/consumer-signup.html', {'form': form})
 
 
 def payment_form(request):
@@ -60,46 +111,47 @@ def payment_form(request):
 
 
 def checkout(request):
-    new_car = Car(
-        name="Honda Civic",
-        year=2017
-    )
-
+    # new_order = Listing(
+    #     name="Honda Civic",
+    #     year=2017
+    # )
     token = request.POST.get("stripeToken")
+
 
     try:
         charge = stripe.Charge.create(
-            amount=2000,
+            amount= 1000,
             currency="usd",
             source=token,
             description="The product charged to the user"
         )
 
-        new_car.charge_id = charge.id
+        # new_car.charge_id = charge.id
 
     except stripe.error.CardError as ce:
         return False, ce
 
     else:
-        new_car.save()
+        # new_car.save()
         return HttpResponseRedirect('/polls/thankyou')
+
 
 def thankyou(request):
     return render(request, "polls/thankyou.html")
 
 
-def vote(request, question_id):
-    p = get_object_or_404(Question, pk=question_id)
+def vote(request, listing_id):
+    p = get_object_or_404(Listing, pk=listing_id)
     try:
-        selected_choice = p.choice_set.get(pk=request.POST['choice'])
+        selected_choice = p.products_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
         return render(request, 'polls/detail.html', {
-            'question': p,
+            'listing': p,
             'error_message': "You didn't select a choice.",
         })
     else:
-        selected_choice.votes += 1
+        selected_choice.amount_available -= 1
         selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
@@ -109,13 +161,14 @@ def vote(request, question_id):
 
 @permission_required('polls.add_question')
 def question(request):
-    question_txt = request.POST.get('question_txt')
-    ch1 = request.POST.get('ch1')
-    ch2 = request.POST.get('ch2')
-    new_question = Question(question_text=question_txt, pub_date=timezone.now())
-    new_question.save()
-    p = new_question
-    p.choice_set.create(choice_text=ch1, votes=0)
-    p.choice_set.create(choice_text=ch2, votes=0)
+    listing_name = request.POST.get('listing_name')
+    type = request.POST.get('type')
+    amount_available = request.POST.get('amount_available')
+    list_price = request.POST.get('list_price')
+    new_listing = Listing(listing_name=listing_name, pub_date=timezone.now())
+    new_listing.save()
+    p = new_listing
+    p.products_set.create(type=type, amount_available=amount_available, list_price=list_price)
+    # p.products_set.create(choice_text=ch2, votes=0)
 
-    return HttpResponseRedirect('/polls/')
+    return HttpResponseRedirect('/polls/view-products')

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<body>
+
+
+
+
+<form action="{% url 'polls:index2' %}"  method="post">
+{% csrf_token %}
+    <label for="type">Add Another Listing </label>
+    <input id="listing_name" type="text" name="listing_name">
+    <p></p>
+     <label for="type"> Input Beef Type </label>
+    <input id="type" type="text" name="type">
+    <p></p>
+    <label for="type">Input Amount Available</label>
+    <input id="amount_available" type="text" name="amount_available">
+    <p></p>
+    <label for="type">Input List Price</label>
+    <input id="list_price" type="text" name="list_price">
+    <p></p>
+    <input type="submit" value="Submit">
+</form>
+
+{% comment %}<form action="{% url 'polls:list-products' %}" method="post">
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+    <label for="type">Add Another </label>
+    <input id="type" type="text" name="type">
+    <input type="submit" value="Submit">
+</form>
+
+</form>{% endcomment %}
+
+</body>
+</html>

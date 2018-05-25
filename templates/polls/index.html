@@ -113,10 +113,14 @@
     <meta charset="UTF-8">
     <title>Index</title>
 </head>
-<h1>Index</h1>
-
+<h1>Join Today</h1>
 
 <body>
+<button style="height:100px;width:300px"><a href="consumer-signup">As Consumer (to buy)</a></button>
+<p></p>
+<p></p>
+<button style="height:100px;width:300px"><a href="producer-signup">As Producer (to sell)</a></button>
+{% comment %}<body>
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
@@ -141,7 +145,7 @@
     <input id="ch2" type="text" name="ch2">
     <p></p>
     <input type="submit" value="Submit">
-</form>
+</form>{% endcomment %}
 
 {#<form action="{% url 'index' %}" method="post">#}
 {% comment %}<form action="{% url 'polls:vote' question.id %}" method="post">
@@ -151,10 +155,12 @@
     <input type="submit" value="Submit">
 </form>{% endcomment %}
 
-</form>
+{#</form>#}
 
 
 </body>
+
+
 </html>
     </div>
     <div class="well">
@@ -169,68 +175,43 @@
 </div>
 
 <div class="container text-center">
-  <h3>What We Do</h3>
+  <h3>Are you a: </h3>
   <br>
   <div class="row">
-    <div class="col-sm-3">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Current Project</p>
+    <div class="col-sm-6">
+      <p>Consumer?</p>
+        <button style="height:100px;width:300px">Go to Marketplace</button>
     </div>
-    <div class="col-sm-3">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Project 2</p>
-    </div>
-    <div class="col-sm-3">
-      <div class="well">
-       <p>Some text..</p>
-      </div>
-      <div class="well">
-       <p>Some text..</p>
-      </div>
-    </div>
-    <div class="col-sm-3">
-      <div class="well">
-       <p>Some text..</p>
-      </div>
-      <div class="well">
-       <p>Some text..</p>
-      </div>
+    <div class="col-sm-6">
+      <p>Producer?</p>
+        <button style="height:100px;width:300px">List Products</button>
     </div>
   </div>
-  <hr>
 </div>
-
+<br>
+<br>
+<br>
 <div class="container text-center">
-  <h3>Our Partners</h3>
+  <h3>What others are saying...</h3>
   <br>
   <div class="row">
-    <div class="col-sm-2">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Partner 1</p>
+    <div class="col-sm-4">
+      <p>I pay less for better beef. I love it!</p>
+      <p>-Jennifer N. - Lincoln NE</p>
     </div>
-    <div class="col-sm-2">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Partner 2</p>
+    <div class="col-sm-4">
+      <p>I pay less for better beef. I love it!</p>
+      <p>-Jennifer N. - Lincoln NE</p>
     </div>
-    <div class="col-sm-2">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Partner 3</p>
+    <div class="col-sm-4">
+      <p>I pay less for better beef. I love it!</p>
+      <p>-Jennifer N. - Lincoln NE</p>
     </div>
-    <div class="col-sm-2">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Partner 4</p>
-    </div>
-    <div class="col-sm-2">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Partner 5</p>
-    </div>
-    <div class="col-sm-2">
-      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
-      <p>Partner 6</p>
-    </div>
+
+
   </div>
 </div><br>
 
 <footer class="container-fluid text-center">
-  <p>Footer Text</p>
+  <p>Footer</p>
 </footer>
