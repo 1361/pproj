@@ -29,6 +29,13 @@
 </head>
 <body>
 
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Beef Place Comprehensive Marketplace</h1>
+    <p>Mission, Vission & Values</p>
+  </div>
+</div>
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -37,23 +44,24 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Logo</a>
+
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Contact</a></li>
+        <li class="active"><a href="{% url 'polls:index' %}">Home</a></li>
+        <li><a href="{% url 'polls:view-products' %}">Marketplace</a></li>
+        <li><a href="{% url 'polls:list-products' %}">List</a></li>
+        {% comment %}<li><a href="{% url 'polls:about' %}">About</a></li>
+        <li><a href="{% url 'polls:contact' %}">Contact</a></li>{% endcomment %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
 
            <ul class="sidebar-nav">
                 {% if user.is_authenticated %}
                     <li><font color="white">User: {{ user.get_username }}</font></li>
-                <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Logout</h5> </a></li>
                 {% else %}
-                <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Login</h5> </a></li>
                 {% endif %}
            </ul>
       </ul>
@@ -116,10 +124,10 @@
 <h1>Join Today</h1>
 
 <body>
-<button style="height:100px;width:300px"><a href="consumer-signup">As Consumer (to buy)</a></button>
+<button style="height:100px;width:300px"><a href="consumer-signup"><h3>As Consumer (to buy)</h3></a></button>
 <p></p>
 <p></p>
-<button style="height:100px;width:300px"><a href="producer-signup">As Producer (to sell)</a></button>
+<button style="height:100px;width:300px"><a href="producer-signup"><h3>As Producer (to sell)</h3></a></button>
 {% comment %}<body>
 {% if latest_question_list %}
     <ul>
@@ -179,12 +187,13 @@
   <br>
   <div class="row">
     <div class="col-sm-6">
-      <p>Consumer?</p>
-        <button style="height:100px;width:300px">Go to Marketplace</button>
+      <p><h3>Consumer?</h3></p>
+          <a href="{% url 'polls:view-products' %}"> <button style="height:100px;width:300px"><h3>Go to Marketplace</h3> </button></a>
     </div>
     <div class="col-sm-6">
-      <p>Producer?</p>
-        <button style="height:100px;width:300px">List Products</button>
+      <p><h3>Producer?</h3></p>
+        <a href="{% url 'polls:list-products' %}"> <button style="height:100px;width:300px"><h3>List Products</h3> </button></a>
+
     </div>
   </div>
 </div>

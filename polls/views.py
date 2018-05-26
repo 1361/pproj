@@ -47,6 +47,14 @@ class ViewProductsView(generic.ListView):
         """Return the last five published questions."""
         return Listing.objects.order_by('-pub_date')[:5]
 
+# class OrderFormView(generic.ListView):
+#     model = Listing
+#     template_name = 'polls/order-form.html'
+#     context_object_name = 'latest_question_list'
+
+
+
+
 
 class DetailView(generic.DetailView):
     model = Listing
@@ -56,6 +64,13 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Listing
     template_name = 'polls/results.html'
+
+
+# class OrderConfirmView(generic.DetailView):
+#     model = Listing
+#     template_name = 'polls/order-confirm.html'
+
+
 
 
 def producer_signup(request):
@@ -159,16 +174,40 @@ def vote(request, listing_id):
         return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
 
 
-@permission_required('polls.add_question')
-def question(request):
-    listing_name = request.POST.get('listing_name')
+def order_form(request):
+    pid = Listing.objects.get(pk=request.POST['listing_id'])
+    products = pid.products_set.all()
+    return render(request, 'polls/order-form.html', {'pid': pid, 'products': products})
+
+def order_confirm(request):
     type = request.POST.get('type')
-    amount_available = request.POST.get('amount_available')
-    list_price = request.POST.get('list_price')
+    quantity = request.POST.get('quantity')
+    return render(request, 'polls/order-confirm.html', {'type':type, 'quantity':quantity})
+
+
+@permission_required('polls.add_question')
+def new_listing(request):
+    listing_name = request.POST.get('listing_name')
     new_listing = Listing(listing_name=listing_name, pub_date=timezone.now())
     new_listing.save()
     p = new_listing
+    type = request.POST.get('type')
+    amount_available = request.POST.get('amount_available')
+    list_price = request.POST.get('list_price')
+
+    type2 = request.POST.get('type2')
+    amount_available2 = request.POST.get('amount_available2')
+    list_price2 = request.POST.get('list_price2')
+
+    type3 = request.POST.get('type3')
+    amount_available3 = request.POST.get('amount_available3')
+    list_price3 = request.POST.get('list_price3')
     p.products_set.create(type=type, amount_available=amount_available, list_price=list_price)
+    p.products_set.create(type=type2, amount_available=amount_available2, list_price=list_price2)
+    p.products_set.create(type=type3, amount_available=amount_available3, list_price=list_price3)
     # p.products_set.create(choice_text=ch2, votes=0)
 
     return HttpResponseRedirect('/polls/view-products')
+
+
+

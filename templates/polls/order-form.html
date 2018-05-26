@@ -31,8 +31,8 @@
 
 <div class="jumbotron">
   <div class="container text-center">
-    <h1>Beef Place Comprehensive Marketplace</h1>
-    <p>Mission, Vission & Values</p>
+    <h1>Submit Listing</h1>
+    <p>Receive the Premiums You Deserve </p>
   </div>
 </div>
 
@@ -48,9 +48,9 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{% url 'polls:index' %}">Home</a></li>
+        <li><a href="{% url 'polls:index' %}">Home</a></li>
         <li><a href="{% url 'polls:view-products' %}">Marketplace</a></li>
-        <li><a href="{% url 'polls:list-products' %}">List</a></li>
+        <li class="active"><a href="{% url 'polls:list-products' %}">List</a></li>
         {% comment %}<li><a href="{% url 'polls:about' %}">About</a></li>
         <li><a href="{% url 'polls:contact' %}">Contact</a></li>{% endcomment %}
       </ul>
@@ -59,9 +59,9 @@
            <ul class="sidebar-nav">
                 {% if user.is_authenticated %}
                     <li><font color="white">User: {{ user.get_username }}</font></li>
-                <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Logout</h5> </a></li>
+               <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Logout</h5> </a></li>
                 {% else %}
-                <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Login</h5> </a></li>
+               <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Login</h5> </a></li>
                 {% endif %}
            </ul>
       </ul>
@@ -69,22 +69,33 @@
   </div>
 </nav>
 
+
+
+<div class="container">
+  <div class="row">
+
+
+    <div class="col-sm-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading"> {{ pid.listing_name }}</div>
+        <div class="panel-body">
+            <p>{{ pid.pub_date }}</p>
+            <form action="{% url 'polls:order-confirm' %}"  method="post" >
+            {% csrf_token %}
+            {% for product in products %}
+                <li>{{ product.type }} -- {{ product.amount_available }} -- ${{ product.list_price }}</li>
+                <input id="type" value = "{{ product.type }}" name="type">
+                <input id="quantity" type = "number" name="quantity">
+
+            {% endfor %}
+            <input type="submit" value="I want to Order" style="height:50px;width:300px;background-color: cornflowerblue">
+            </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
 </body>
 </html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>Thank you for your payment!</p>
-<p>
-<a href="{% url 'polls:index'%}">Return to Home Page</a>
-</p>
-</body>
-</html>
-
-<footer class="container-fluid text-center">
-  <p>Footer Text</p>
-</footer>
-

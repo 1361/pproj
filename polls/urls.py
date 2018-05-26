@@ -13,10 +13,12 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
     url(r'^list-products/$', views.ListView.as_view(), name='list-products'),
     url(r'^view-products/$', views.ViewProductsView.as_view(), name='view-products'),
+    url(r'^order-form/$', views.order_form, name='order-form'),
+    url(r'^order-confirm/$', views.order_confirm, name='order-confirm'),
+
     url(r'^(?P<listing_id>[0-9]+)/vote/$', views.vote, name='vote'),
 
-    url(r'^add/$', views.question, name='index2'),
-
+    url(r'^add/$', views.new_listing, name='index2'),
 
     url(r'^producer-signup/$', views.producer_signup, name='producer_signup'),
     url(r'^consumer-signup/$', views.consumer_signup, name='consumer_signup'),

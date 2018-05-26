@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -37,3 +37,12 @@ class Products(models.Model):
 
     def __str__(self):
         return self.type
+
+#
+# class Orders(models.Model):
+#     user = models.ForeignKey(User)
+#     listing = models.ForeignKey(Listing)
+#     products = models.ForeignKey(Products)
+#     quantity = models.IntegerField(default=0)
+
+

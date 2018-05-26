@@ -1,20 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+
+    .carousel-inner img {
+      width: 100%; /* Set width to 100% */
+      min-height: 200px;
+    }
+
+    /* Hide the carousel text when the screen is less than 600 pixels wide */
+    @media (max-width: 600px) {
+      .carousel-caption {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
-<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Submit Listing</h1>
+    <p>Receive the Premiums You Deserve </p>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'polls:index' %}">Home</a></li>
+        <li><a href="{% url 'polls:view-products' %}">Marketplace</a></li>
+        <li class="active"><a href="{% url 'polls:list-products' %}">List</a></li>
+        {% comment %}<li><a href="{% url 'polls:about' %}">About</a></li>
+        <li><a href="{% url 'polls:contact' %}">Contact</a></li>{% endcomment %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+
+           <ul class="sidebar-nav">
+                {% if user.is_authenticated %}
+                    <li><font color="white">User: {{ user.get_username }}</font></li>
+               <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Logout</h5> </a></li>
+                {% else %}
+               <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Login</h5> </a></li>
+                {% endif %}
+           </ul>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 
 
 
 <form action="{% url 'polls:index2' %}"  method="post">
 {% csrf_token %}
-    <label for="type">Add Another Listing </label>
+    <label for="type"><h3>Name of Listing</h3> </label>
     <input id="listing_name" type="text" name="listing_name">
     <p></p>
+    <p>(Enter up to 3 Products)</p>
+    <br>
+    <p></p>
+    <p><h4>Product #1</h4></p>
      <label for="type"> Input Beef Type </label>
     <input id="type" type="text" name="type">
     <p></p>
@@ -24,8 +90,37 @@
     <label for="type">Input List Price</label>
     <input id="list_price" type="text" name="list_price">
     <p></p>
-    <input type="submit" value="Submit">
+
+     <br>
+    <p></p>
+    <p><h4>Product #2 (Optional)</h4></p>
+     <label for="type"> Input Beef Type </label>
+    <input id="type2" type="text" name="type2">
+    <p></p>
+    <label for="type">Input Amount Available</label>
+    <input id="amount_available2" type="text" name="amount_available2">
+    <p></p>
+    <label for="type">Input List Price</label>
+    <input id="list_price2" type="text" name="list_price2">
+    <p></p>
+
+     <br>
+    <p></p>
+    <p><h4>Product #3 (Optional)</h4></p>
+     <label for="type"> Input Beef Type </label>
+    <input id="type3" type="text" name="type3">
+    <p></p>
+    <label for="type">Input Amount Available</label>
+    <input id="amount_available3" type="text" name="amount_available3">
+    <p></p>
+    <label for="type">Input List Price</label>
+    <input id="list_price3" type="text" name="list_price3">
+    <p></p>
+    <input type="submit" value="I'm done, Submit!" style="height:50px;width:300px;background-color: cornflowerblue">
 </form>
+
+<br>
+<br>
 
 {% comment %}<form action="{% url 'polls:list-products' %}" method="post">
 <form action="{% url 'polls:vote' question.id %}" method="post">
