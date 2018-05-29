@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from .models import Question, Choice, Listing, Products
+from .models import Question, Choice, Listing, Products, Cart
 
 
 
@@ -34,6 +34,9 @@ class ListingAdmin(admin.ModelAdmin):
     inlines = [ProductsInline]
 
 
+
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Listing, ListingAdmin)
+admin.site.register(Cart)
 

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 
 
@@ -31,18 +32,15 @@ class Listing(models.Model):
 
 class Products(models.Model):
     listing = models.ForeignKey(Listing)
-    type = models.CharField(max_length=200)
+    type = models.CharField(max_length=200, choices="Ground Beef","Steak")
     amount_available = models.IntegerField(default=0)
+    unit = models.CharField(max_length=50, default="")
     list_price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return self.type
 
-#
-# class Orders(models.Model):
-#     user = models.ForeignKey(User)
-#     listing = models.ForeignKey(Listing)
-#     products = models.ForeignKey(Products)
-#     quantity = models.IntegerField(default=0)
 
-
+class Cart(models.Model):
+    products = models.ForeignKey(Products)
+    quantity = models.IntegerField(default=0)

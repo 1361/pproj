@@ -79,30 +79,22 @@
       <div class="panel panel-primary">
         <div class="panel-heading"> {{ listing.listing_name }}</div>
         <div class="panel-body">
-            <p>{{ listing.pub_date }}</p>
-            <p>{{ listing.id }}</p>
+            <p>Listing Date: {{ listing.pub_date }}</p>
             {% for product in listing.products_set.all %}
-                <li>{{ product.type }} -- {{ product.amount_available }} -- ${{ product.list_price }}</li>
+                <ol>
+                <p>Beef Type: <strong>{{ product.type }}</strong></p>
+                <p>Amount Available: <strong>{{ product.amount_available }} {{ product.unit }}</strong></p>
+                <p>Cost/Unit: <strong>${{ product.list_price }} per {{ product.unit }}</strong></p>
+                --
+                </ol>
             {% endfor %}
         </div>
         <div class="panel-footer">
-            <form action="{% url 'polls:checkout_page'  %}" method="POST">
-            {% csrf_token %}
-              <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_zgA675mwTdEfIKiI5kUMzIil"
-                data-amount=product.list_price
-                data-name="Demo Site"
-                data-description="Example charge"
-                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="auto">
-              </script>
-            </form>
 
             <form action="{% url 'polls:order-form' %}"  method="post" >
             {% csrf_token %}
-            <input id="listing_id" value="{{ listing.id }}" name="listing_id">
-                 <input type="submit" value="I want to Order" style="height:50px;width:300px;background-color: cornflowerblue">
+            <input id="listing_id" type = 'hidden' value="{{ listing.id }}" name="listing_id">
+                 <input type="submit" value="Order" style="height:50px;width:300px;background-color: cornflowerblue">
             </form>
 
 

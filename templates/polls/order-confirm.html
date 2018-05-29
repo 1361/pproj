@@ -73,8 +73,34 @@
 
 <div class="container">
   <div class="row">
-      <p>{{ type }}</p>
-      <p>{{ quantity }} lbs</p>
+      <p>Order Reference Number: <strong>{{ order.id }}</strong></p>
+      {% if user.is_authenticated %}
+                 <p>User Id: {{ user.id }}</p>
+      {% endif %}
+
+      <p>Listing: <strong>{{ listing.listing_name }}</strong></p>
+      <p>Beef Type: <strong>{{ p.type }}</strong></p>
+      <p>Units Ordered: <strong>{{ order.quantity }}</strong></p>
+      <p>Cost/Unit: <strong>{{ p.list_price }}</strong></p>
+      <p>Total Cost: <strong>${{ total }}</strong></p>
+      <p>
+          <form action="{% url 'polls:checkout_page'  %}" method="POST">
+            {% csrf_token %}
+            <input id="type" type = 'hidden' value = "{{ p.type }}" name="type">
+            <input id="cost" type = 'hidden' value = "{{ p.list_price }}" name="cost">
+            <input id="quantity" type = 'hidden' value = "{{ order.quantity }}" name="quantity">
+              <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_zgA675mwTdEfIKiI5kUMzIil"
+                data-amount=product.list_price
+                data-name="Demo Site"
+                data-description="Example charge"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto">
+              </script>
+            </form>
+      </p>
+      <p></p>
 
 {% comment %}
     <div class="col-sm-12">

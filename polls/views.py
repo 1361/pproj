@@ -9,10 +9,11 @@ from polls.forms import ProducerProfileForm, ConsumerProfileForm
 from django.contrib.auth import login, authenticate
 from mysite import settings
 from django.contrib.auth.models import Group
+from django.contrib.auth.models import User
 import stripe
 from decimal import Decimal
 
-from .models import Question, Choice, Listing
+from .models import Question, Choice, Listing, Cart
 
 stripe.api_key = "sk_test_wDLDyofvO4HaufPVzroEI5p8"
 
@@ -47,13 +48,11 @@ class ViewProductsView(generic.ListView):
         """Return the last five published questions."""
         return Listing.objects.order_by('-pub_date')[:5]
 
+
 # class OrderFormView(generic.ListView):
 #     model = Listing
 #     template_name = 'polls/order-form.html'
 #     context_object_name = 'latest_question_list'
-
-
-
 
 
 class DetailView(generic.DetailView):
@@ -69,8 +68,6 @@ class ResultsView(generic.DetailView):
 # class OrderConfirmView(generic.DetailView):
 #     model = Listing
 #     template_name = 'polls/order-confirm.html'
-
-
 
 
 def producer_signup(request):
@@ -130,12 +127,18 @@ def checkout(request):
     #     name="Honda Civic",
     #     year=2017
     # )
+    type = request.POST.get('type')
+    cost = request.POST.get('cost')
+    co = float(cost)
+    quantity = request.POST.get('quantity')
+    qu = float(quantity)
+    charge_amount = qu * co *100
+    ch1 = int(charge_amount)
     token = request.POST.get("stripeToken")
-
 
     try:
         charge = stripe.Charge.create(
-            amount= 1000,
+            amount=ch1,
             currency="usd",
             source=token,
             description="The product charged to the user"
@@ -176,13 +179,23 @@ def vote(request, listing_id):
 
 def order_form(request):
     pid = Listing.objects.get(pk=request.POST['listing_id'])
+
     products = pid.products_set.all()
     return render(request, 'polls/order-form.html', {'pid': pid, 'products': products})
 
-def order_confirm(request):
+
+def shopping_cart(request):
     type = request.POST.get('type')
     quantity = request.POST.get('quantity')
-    return render(request, 'polls/order-confirm.html', {'type':type, 'quantity':quantity})
+    listing_id = request.POST.get('id')
+    listing = Listing.objects.get(pk=listing_id)
+    p = listing.products_set.get(type=type)
+    cost = float(p.list_price)
+    qu = float(quantity)
+    total = cost*qu
+    order = p.cart_set.create(quantity=quantity)
+    order.save()
+    return render(request, 'polls/order-confirm.html', {'listing': listing, 'p': p, 'order': order, 'total': total})
 
 
 @permission_required('polls.add_question')
@@ -191,23 +204,28 @@ def new_listing(request):
     new_listing = Listing(listing_name=listing_name, pub_date=timezone.now())
     new_listing.save()
     p = new_listing
-    type = request.POST.get('type')
-    amount_available = request.POST.get('amount_available')
-    list_price = request.POST.get('list_price')
+    return render(request, 'polls/edit-listing.html', {'p': p})
 
-    type2 = request.POST.get('type2')
-    amount_available2 = request.POST.get('amount_available2')
-    list_price2 = request.POST.get('list_price2')
-
-    type3 = request.POST.get('type3')
-    amount_available3 = request.POST.get('amount_available3')
-    list_price3 = request.POST.get('list_price3')
-    p.products_set.create(type=type, amount_available=amount_available, list_price=list_price)
-    p.products_set.create(type=type2, amount_available=amount_available2, list_price=list_price2)
-    p.products_set.create(type=type3, amount_available=amount_available3, list_price=list_price3)
+    # type2 = request.POST.get('type2')
+    # amount_available2 = request.POST.get('amount_available2')
+    # list_price2 = request.POST.get('list_price2')
+    #
+    # type3 = request.POST.get('type3')
+    # amount_available3 = request.POST.get('amount_available3')
+    # list_price3 = request.POST.get('list_price3')
+    # p.products_set.create(type=type, amount_available=amount_available, list_price=list_price)
+    # p.products_set.create(type=type2, amount_available=amount_available2, list_price=list_price2)
+    # p.products_set.create(type=type3, amount_available=amount_available3, list_price=list_price3)
     # p.products_set.create(choice_text=ch2, votes=0)
 
-    return HttpResponseRedirect('/polls/view-products')
-
-
-
+@permission_required('polls.add_question')
+def edit_listing(request):
+    type1 = request.POST.get('type')
+    amount_available = request.POST.get('amount_available')
+    unit = request.POST.get('unit')
+    list_price = request.POST.get('list_price')
+    id = request.POST.get('id')
+    p = Listing.objects.get(pk=id)
+    p.products_set.create(type=type1, amount_available=amount_available, unit=unit, list_price=list_price)
+    p.save()
+    return render(request, 'polls/edit-listing.html', {'p': p})

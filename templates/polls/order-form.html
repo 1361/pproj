@@ -80,16 +80,20 @@
         <div class="panel-heading"> {{ pid.listing_name }}</div>
         <div class="panel-body">
             <p>{{ pid.pub_date }}</p>
-            <form action="{% url 'polls:order-confirm' %}"  method="post" >
-            {% csrf_token %}
-            {% for product in products %}
-                <li>{{ product.type }} -- {{ product.amount_available }} -- ${{ product.list_price }}</li>
-                <input id="type" value = "{{ product.type }}" name="type">
-                <input id="quantity" type = "number" name="quantity">
 
+            {% for product in products %}
+                <p>{{ product.type }} -- {{ product.amount_available }} -- ${{ product.list_price }}
+                <form action="{% url 'polls:order-confirm' %}"  method="post" >
+                {% csrf_token %}
+                    <input id="id" type = 'hidden'  value = {{ pid.id }} name="id">
+                    <input id="type" type = 'hidden' value = {{ product.type }} name="type">
+                    <input id="quantity" placeholder="Enter Desired Quantity" = "number" name="quantity">
+                    </p>
+                    <input type="submit" value="Add to Cart" style="height:50px;width:300px;background-color: cornflowerblue">
+                </form>
             {% endfor %}
-            <input type="submit" value="I want to Order" style="height:50px;width:300px;background-color: cornflowerblue">
-            </form>
+
+
         </div>
       </div>
     </div>
