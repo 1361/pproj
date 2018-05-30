@@ -32,7 +32,7 @@ class Listing(models.Model):
 
 class Products(models.Model):
     listing = models.ForeignKey(Listing)
-    type = models.CharField(max_length=200, choices="Ground Beef","Steak")
+    type = models.CharField(max_length=200)
     amount_available = models.IntegerField(default=0)
     unit = models.CharField(max_length=50, default="")
     list_price = models.DecimalField(max_digits=6, decimal_places=2)
