@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</head>
+<h1>Listing: {{ p.listing_name }}</h1>
+<body>
+<h2>Products</h2>
+    {% for product in p.products_set.all %}
+        <li>Product: <strong>{{ product.type }}</strong> -- Amount Available: <strong>{{ product.amount_available }} {{ product.unit }}</strong> -- Cost/Unit: <strong> ${{ product.list_price }}/ {{ product.unit }}</strong></li>
+    {% endfor %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:edit-listing' %}"  method="post">
+{% csrf_token %}
+
+    <input id="id" type="hidden" value ={{ p.id }} name="id">
+    <p></p>
+    <p><h4>Add Product</h4></p>
+    <label for="type"> Input Beef Type </label>
+    <input id="type" type = "text" name="type">
+    <p></p>
+    <label for="type">Input Amount Available and Units</label>
+    <input id="amount_available" type="text" name="amount_available"> <input id="unit" type="text" placeholder="ex. lbs" name="unit">
+    <p></p>
+    <label for="type">Input List Price ($ per Unit)</label>
+    <input id="list_price" type="text" name="list_price">
+    <p></p>
+    <input type="submit" value="Add Product" style="height:50px;width:300px;background-color: cornflowerblue">
+</form>
+<br>
+<button style="height:50px;width:300px"><a href="{% url 'polls:view-products' %}"><h3>Finish Listing</h3></a></button>
+
+</body>
+</body>
+</html>
