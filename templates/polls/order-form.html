@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+
+    .carousel-inner img {
+      width: 100%; /* Set width to 100% */
+      min-height: 200px;
+    }
+
+    /* Hide the carousel text when the screen is less than 600 pixels wide */
+    @media (max-width: 600px) {
+      .carousel-caption {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Submit Listing</h1>
+    <p>Receive the Premiums You Deserve </p>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'polls:index' %}">Home</a></li>
+        <li><a href="{% url 'polls:view-products' %}">Marketplace</a></li>
+        <li class="active"><a href="{% url 'polls:list-products' %}">List</a></li>
+        {% comment %}<li><a href="{% url 'polls:about' %}">About</a></li>
+        <li><a href="{% url 'polls:contact' %}">Contact</a></li>{% endcomment %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+
+           <ul class="sidebar-nav">
+                {% if user.is_authenticated %}
+                    <li><font color="white">User: {{ user.get_username }}</font></li>
+               <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Logout</h5> </a></li>
+                {% else %}
+               <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Login</h5> </a></li>
+                {% endif %}
+           </ul>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="container">
+  <div class="row">
+
+
+    <div class="col-sm-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading"> {{ pid.listing_name }}</div>
+        <div class="panel-body">
+            <p>{{ pid.pub_date }}</p>
+
+            {% for product in products %}
+                <p>{{ product.type }} -- {{ product.amount_available }} -- ${{ product.list_price }}
+                <form action="{% url 'polls:order-confirm' %}"  method="post" >
+                {% csrf_token %}
+                    <input id="id" type = 'hidden'  value = {{ pid.id }} name="id">
+                    <input id="type" type = 'hidden' value = {{ product.type }} name="type">
+                    <input id="quantity" placeholder="Enter Desired Quantity" = "number" name="quantity">
+                    </p>
+                    <input type="submit" value="Add to Cart" style="height:50px;width:300px;background-color: cornflowerblue">
+                </form>
+            {% endfor %}
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</body>
+</html>

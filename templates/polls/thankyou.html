@@ -29,6 +29,13 @@
 </head>
 <body>
 
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Beef Place Comprehensive Marketplace</h1>
+    <p>Mission, Vission & Values</p>
+  </div>
+</div>
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -37,17 +44,26 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Logo</a>
+
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Contact</a></li>
+        <li class="active"><a href="{% url 'polls:index' %}">Home</a></li>
+        <li><a href="{% url 'polls:view-products' %}">Marketplace</a></li>
+        <li><a href="{% url 'polls:list-products' %}">List</a></li>
+        {% comment %}<li><a href="{% url 'polls:about' %}">About</a></li>
+        <li><a href="{% url 'polls:contact' %}">Contact</a></li>{% endcomment %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+           <ul class="sidebar-nav">
+                {% if user.is_authenticated %}
+                    <li><font color="white">User: {{ user.get_username }}</font></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Logout</h5> </a></li>
+                {% else %}
+                <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Login</h5> </a></li>
+                {% endif %}
+           </ul>
       </ul>
     </div>
   </div>
@@ -55,22 +71,16 @@
 
 </body>
 </html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Results</title>
+    <title>Title</title>
 </head>
 <body>
-<h1>{{ listing.listing_name }}</h1>
-
-<ul>
-{% for product in listing.products_set.all %}
-    <li>{{ product.type }} -- {{ product.amount_available }} vote{{ product.amount_available|pluralize }}</li>
-{% endfor %}
-</ul>
-
-<a href="{% url 'polls:detail' listing.id %}">Vote again?</a>
+<p>Thank you for your payment!</p>
+<p>
+<a href="{% url 'polls:index'%}">Return to Home Page</a>
+</p>
 </body>
 </html>
 
