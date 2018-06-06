@@ -1,11 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+
+    .carousel-inner img {
+      width: 100%; /* Set width to 100% */
+      min-height: 200px;
+    }
+
+    /* Hide the carousel text when the screen is less than 600 pixels wide */
+    @media (max-width: 600px) {
+      .carousel-caption {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Beef Place Comprehensive Marketplace</h1>
+    <p>Mission, Vission & Values</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'polls:index' %}">Home</a></li>
+        <li><a href="{% url 'polls:view-products' %}">Marketplace</a></li>
+        <li><a href="{% url 'polls:list-products' %}">List</a></li>
+        {% comment %}<li><a href="{% url 'polls:about' %}">About</a></li>
+        <li><a href="{% url 'polls:contact' %}">Contact</a></li>{% endcomment %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+
+           <ul class="sidebar-nav">
+                {% if user.is_authenticated %}
+                    <li><font color="white">User: {{ user.get_username }}</font></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Logout</h5> </a></li>
+                {% else %}
+                <li><a href="{% url 'login'%}?next={{request.path}}"><span class="glyphicon glyphicon-log-in"></span><h5>Login</h5> </a></li>
+                {% endif %}
+           </ul>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+<div class="row">
+  <div class="col-sm-8">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+      </ol>
+
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <img src="https://foremangrillrecipes.com/wp-content/uploads/2012/12/new-york-strip-steak-foreman-grill.jpg" alt="Image">
+          <div class="carousel-caption">
+            <h3>Sell $</h3>
+            <p>Money Money.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <img src="https://hips.hearstapps.com/del.h-cdn.co/assets/18/08/1519155106-flank-steak-horizontal.jpg" alt="Image">
+          <div class="carousel-caption">
+            <h3>More Sell $</h3>
+            <p>Lorem ipsum...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left and right controls -->
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="well">
+
+</body>
+</html>
+
+
+<head>
+
     <meta charset="UTF-8">
     <title>Index</title>
 </head>
-<h1>Index</h1>
+<h1>Join Today</h1>
+
 <body>
+<button style="height:100px;width:300px"><a href="consumer-signup"><h3>As Consumer (to buy)</h3></a></button>
+<p></p>
+<p></p>
+<button style="height:100px;width:300px"><a href="producer-signup"><h3>As Producer (to sell)</h3></a></button>
+{% comment %}<body>
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
@@ -15,5 +138,89 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
+
+
+<form action="add/"  method="post">
+{% csrf_token %}
+    <label for="type">Add Another Question </label>
+    <input id="question_txt" type="text" name="question_txt">
+    <p></p>
+     <label for="type">Choice 1 </label>
+    <input id="ch1" type="text" name="ch1">
+    <p></p>
+    <label for="type">Choice 2 </label>
+    <input id="ch2" type="text" name="ch2">
+    <p></p>
+    <input type="submit" value="Submit">
+</form>{% endcomment %}
+
+{#<form action="{% url 'index' %}" method="post">#}
+{% comment %}<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+    <label for="type">Add Another </label>
+    <input id="type" type="text" name="type">
+    <input type="submit" value="Submit">
+</form>{% endcomment %}
+
+{#</form>#}
+
+
 </body>
+
+
 </html>
+    </div>
+    <div class="well">
+       <p>Upcoming Events..</p>
+    </div>
+    <div class="well">
+       <p>Visit Our Blog</p>
+    </div>
+  </div>
+</div>
+<hr>
+</div>
+
+<div class="container text-center">
+  <h3>Are you a: </h3>
+  <br>
+  <div class="row">
+    <div class="col-sm-6">
+      <p><h3>Consumer?</h3></p>
+          <a href="{% url 'polls:view-products' %}"> <button style="height:100px;width:300px"><h3>Go to Marketplace</h3> </button></a>
+    </div>
+    <div class="col-sm-6">
+      <p><h3>Producer?</h3></p>
+        <a href="{% url 'polls:list-products' %}"> <button style="height:100px;width:300px"><h3>List Products</h3> </button></a>
+
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<div class="container text-center">
+  <h3>What others are saying...</h3>
+  <br>
+  <div class="row">
+    <div class="col-sm-4">
+      <p>I pay less for better beef. I love it!</p>
+      <p>-Jennifer N. - Lincoln NE</p>
+    </div>
+    <div class="col-sm-4">
+      <p>I pay less for better beef. I love it!</p>
+      <p>-Jennifer N. - Lincoln NE</p>
+    </div>
+    <div class="col-sm-4">
+      <p>I pay less for better beef. I love it!</p>
+      <p>-Jennifer N. - Lincoln NE</p>
+    </div>
+
+
+  </div>
+</div><br>
+
+<footer class="container-fluid text-center">
+  <p>Footer</p>
+</footer>

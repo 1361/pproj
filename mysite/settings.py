@@ -27,6 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+STRIPE_SECRET_KEY = os.environ.get(
+    "STRIPE_SECRET_KEY",
+    "sk_test_wDLDyofvO4HaufPVzroEI5p8"
+
+)
+STRIPE_PUBLIC_KEY = os.environ.get(
+    "STRIPE_SECRET_KEY",
+    "pk_test_zgA675mwTdEfIKiI5kUMzIil"
+)
+
 
 # Application definition
 
@@ -38,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls',
+    'payments',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,6 +63,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'mysite.urls'
+LOGIN_REDIRECT_URL = '/polls/'
 
 TEMPLATES = [
     {
@@ -101,3 +113,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
