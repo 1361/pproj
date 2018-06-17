@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View</title>
+</head>
+<body>
+ <li><a href="{% url 'parking:index' %}">Home</a></li>
+ <li><a href="{% url 'parking:upload' %}">Upload</a></li>
+<h1>Citations for Q1614</h1>
+
+<body>
+<h3>Monday</h3>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+</canvas><canvas id="myChart"></canvas>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: {{ hour}} ,
+    datasets: [{
+      label: 'Citation Count',
+      data: {{ m_count }},
+      backgroundColor: "blue"
+    }]
+  }
+});
+</script>
+
+</body>
+
+
+
+<body>
+<h3>Tuesday</h3>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+</canvas><canvas id="myChart2"></canvas>
+<script>
+    var ctt = document.getElementById('myChart2').getContext('2d');
+var myChart2 = new Chart(ctt, {
+  type: 'bar',
+  data: {
+    labels: {{ hour}} ,
+    datasets: [{
+      label: 'Citation Count',
+      data: {{ t_count }},
+      backgroundColor: "blue"
+    }]
+  }
+});
+</script>
+
+</body>
+
+
+<body>
+<h3>Wednesday</h3>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+</canvas><canvas id="myChart3"></canvas>
+<script>
+    var ctw = document.getElementById('myChart3').getContext('2d');
+var myChart3 = new Chart(ctw, {
+  type: 'bar',
+  data: {
+    labels: {{ hour}} ,
+    datasets: [{
+      label: 'Citation Count',
+      data: {{ w_count }},
+      backgroundColor: "blue"
+    }]
+  }
+});
+</script>
+
+</body>
+
+
+
+
+<body>
+<h3>Thursday</h3>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+</canvas><canvas id="myChart4"></canvas>
+<script>
+    var cttr = document.getElementById('myChart4').getContext('2d');
+var myChart4 = new Chart(cttr, {
+  type: 'bar',
+  data: {
+    labels: {{ hour}} ,
+    datasets: [{
+      label: 'Citation Count',
+      data: {{ tr_count }},
+      backgroundColor: "blue"
+    }]
+  }
+});
+</script>
+
+</body>
+
+
+
+
+<body>
+<h3>Friday</h3>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+</canvas><canvas id="myChart5"></canvas>
+<script>
+    var ctf = document.getElementById('myChart5').getContext('2d');
+var myChart5 = new Chart(ctf, {
+  type: 'bar',
+  data: {
+    labels: {{ hour}} ,
+    datasets: [{
+      label: 'Citation Count',
+      data: {{ f_count }},
+      backgroundColor: "blue"
+    }]
+  }
+});
+</script>
+
+</body>
+
+
+
+
+
+
+</body>
+</html>
+
+

@@ -78,6 +78,11 @@
 </head>
 <body>
 <p>Thank you for your payment!</p>
+<p>{{ ord.user.username}}</p>
+<p>{{ ord.cart.quantity }}</p>
+<p>{{ ord.charge_id }}</p>
+<p>{{ ord.shipping_address }}</p>
+<p>Total Charged: {{ ch1 }}</p>
 <p>
 <a href="{% url 'polls:index'%}">Return to Home Page</a>
 </p>

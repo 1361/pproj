@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^consumer-signup/$', views.consumer_signup, name='consumer_signup'),
     url(r'^payment-form/$', views.payment_form, name='payment_form'),
     url(r'^checkout/$', views.checkout, name='checkout_page'),
-    url(r'^thankyou/$', views.thankyou, name='thankyou_page'),
+    # url(r'^thankyou/$', views.thankyou, name='thankyou_page'),
 ]

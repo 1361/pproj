@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 import stripe
 from decimal import Decimal
 
-from .models import Question, Choice, Listing, Cart
+from .models import Question, Choice, Listing, Cart, Order, Products
 
 stripe.api_key = "sk_test_wDLDyofvO4HaufPVzroEI5p8"
 
@@ -123,19 +123,20 @@ def payment_form(request):
 
 
 def checkout(request):
-    # new_order = Listing(
-    #     name="Honda Civic",
-    #     year=2017
-    # )
+    user_id = request.POST.get('user_id')
+    order_id = request.POST.get('order_id')
+    product_id = request.POST.get('product_id')
     type = request.POST.get('type')
     cost = request.POST.get('cost')
+    shipping_address= request.POST.get('shipping_address')
     co = float(cost)
     quantity = request.POST.get('quantity')
     qu = float(quantity)
     charge_amount = qu * co *100
     ch1 = int(charge_amount)
     token = request.POST.get("stripeToken")
-
+    crt = Cart.objects.create(quantity=quantity)
+    crt.save()
     try:
         charge = stripe.Charge.create(
             amount=ch1,
@@ -144,18 +145,20 @@ def checkout(request):
             description="The product charged to the user"
         )
 
-        # new_car.charge_id = charge.id
+        ord = Order.objects.create(user=User.objects.get(pk=user_id), cart=Cart.objects.get(pk=crt.id), charge_id=charge.stripe_id, shipping_address=shipping_address, order_date=timezone.now())
+        ord.save()
 
     except stripe.error.CardError as ce:
         return False, ce
 
     else:
         # new_car.save()
-        return HttpResponseRedirect('/polls/thankyou')
+ #       return HttpResponseRedirect('/polls/thankyou', {'ord': ord})
+        return render(request, 'polls/thankyou.html', {'ord': ord, 'ch1': ch1})
 
 
-def thankyou(request):
-    return render(request, "polls/thankyou.html")
+# def thankyou(request):
+#     return render(request, "polls/thankyou.html")
 
 
 def vote(request, listing_id):
@@ -193,7 +196,7 @@ def shopping_cart(request):
     cost = float(p.list_price)
     qu = float(quantity)
     total = cost*qu
-    order = p.cart_set.create(quantity=quantity)
+    order = Cart.objects.create(quantity=quantity)
     order.save()
     return render(request, 'polls/order-confirm.html', {'listing': listing, 'p': p, 'order': order, 'total': total})
 

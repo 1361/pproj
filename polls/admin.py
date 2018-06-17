@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
-from .models import Question, Choice, Listing, Products, Cart
+from .models import Question, Choice, Listing, Products, Cart, Order
 
 
 
@@ -33,10 +33,16 @@ class ListingAdmin(admin.ModelAdmin):
     ]
     inlines = [ProductsInline]
 
-
+class OrderAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['listing_name']}),
+        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+    ]
+    inlines = [ProductsInline]
 
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Listing, ListingAdmin)
 admin.site.register(Cart)
+admin.site.register(Order)
 

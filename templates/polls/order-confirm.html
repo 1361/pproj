@@ -86,9 +86,13 @@
       <p>
           <form action="{% url 'polls:checkout_page'  %}" method="POST">
             {% csrf_token %}
+            <input id="user_id" type = 'hidden' value = "{{ user.id }}" name="user_id">
+            <input id="product_id" type = 'hidden' value = "{{ p.id }}" name="product_id">
+            <input id="order_id" type = 'hidden' value = "{{ order.id }}" name="order_id">
             <input id="type" type = 'hidden' value = "{{ p.type }}" name="type">
             <input id="cost" type = 'hidden' value = "{{ p.list_price }}" name="cost">
             <input id="quantity" type = 'hidden' value = "{{ order.quantity }}" name="quantity">
+            <input id="shipping_address" type="text" name="shipping_address">
               <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="pk_test_zgA675mwTdEfIKiI5kUMzIil"

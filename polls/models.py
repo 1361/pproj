@@ -42,5 +42,13 @@ class Products(models.Model):
 
 
 class Cart(models.Model):
-    products = models.ForeignKey(Products)
+    products = models.ForeignKey(Products, null=False)
     quantity = models.IntegerField(default=0)
+
+
+class Order(models.Model):
+    cart = models.ForeignKey(Cart)
+    charge_id = models.CharField(max_length=400)
+    user = models.ForeignKey(User)
+    shipping_address = models.CharField(max_length=200)
+    order_date = models.DateTimeField('Date Ordered')

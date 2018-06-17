@@ -23,6 +23,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^polls/', include('polls.urls', namespace = "polls")),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/', include('django.contrib.auth.urls'), name="accounts")
+    url(r'^accounts/', include('django.contrib.auth.urls'), name="accounts"),
+    url(r'^parking/', include('parking.urls', namespace= "parking")),
 
 ]

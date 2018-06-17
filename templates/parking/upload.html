@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload</title>
+</head>
+<body>
+ <li><a href="{% url 'parking:index' %}">Home</a></li>
+ <li><a href="{% url 'parking:view' %}">View</a></li>
+
+<form action="{% url 'parking:add' %}"  method="post">
+{% csrf_token %}
+    <p><h4>Citation</h4></p>
+    <label for="street"> Input Street</label>
+    <input id="street" value=Q1614 name="street" readonly>
+    <p></p>
+    <label for="date"> Input Date Time</label>
+    <input id="date" type = "datetime-local" name="date">
+    <p></p>
+    <label for="officer"> Input Officer No</label>
+    <input id="officer" type = "number" name="officer">
+    <p></p>
+
+    <input type="submit" value="Submit Citation" style="height:50px;width:300px;background-color: cornflowerblue">
+</form>
+
+</body>
+</html>
